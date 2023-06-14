@@ -1,42 +1,97 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  height: 100vh;
+  background-color: #f9f9f9;
+  padding: 20px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Quiz.jsx */
+.quiz-number {
+  position: fixed;
+  top: 0px;
+  left: 20px;
+  color: #aaa;
+  margin-bottom: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.quiz-option {
+  margin-bottom: 10px;
 }
 
-.card {
-  padding: 2em;
+.quiz-option button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #eee;
+  color: #333;
+  cursor: pointer;
 }
 
-.read-the-docs {
-  color: #888;
+.quiz-option button:hover {
+  background-color: #ddd;
+}
+
+.quiz-option button.selected {
+  background-color: #0782F9;
+  color: #fff;
+}
+
+.quiz-button {
+  display: flex;
+  justify-content: center;
+}
+
+.quiz-button button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+}
+
+.quiz-button button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Result.jsx */
+.result-score {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #0782F9;
+}
+
+.result-answer {
+  margin-bottom: 10px;
+}
+
+.result-button {
+  display: flex;
+  justify-content: center;
+}
+
+.result-button button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 30px;
+}
+
+.result-button button:not(:last-child) {
+  margin-right: 10px;
+}
+
+.result-button button:hover {
+  background-color: #555;
 }

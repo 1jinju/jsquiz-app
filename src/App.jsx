@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Quiz } from './component/Quiz.jsx';
-import { Result } from './component/Result.jsx';
+import {Quiz} from './component/Quiz.jsx';
+import {Result} from './component/Result.jsx';
+import './App.css';
 
 const App = () => {
   const [quizData, setQuizData] = useState([]); // 퀴즈 데이터
@@ -39,6 +40,8 @@ const App = () => {
       // 결과화면 표시
       setIsResultVisible(true);
     }
+
+    setSelectedAnswer(null);
   };
 
   // 틀린 문제 다시 풀기
