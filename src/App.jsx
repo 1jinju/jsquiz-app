@@ -6,7 +6,7 @@ const App = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isResultVisible, setIsResultVisible] = useState(false);
-
+  const [incorrectList, setIncorrectList] = useState([]); // 틀린 문제 리스트
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -27,13 +27,23 @@ const App = () => {
 
     if (selectedAnswerIndex === currentQuiz.correct) {
       setScore(score + 1);
-    }
-    if (currentIndex < quiz.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }else {
-      setIsResultVisible(true);
+    } else {
+      setIncorrectList([...incorrectList, currentIndex]);
     }
 
+    if (currentIndex < quiz.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      setIsResultVisible(true);
+    }
+  };
+  const retryQuiz = () => {
+    const incorrectIndexes = incorrectList.map((incorrect) => quiz[incorrect]);
+    setQuiz(incorrectIndexes);
+    setCurrentIndex(0);
+    setScore(0);
+    setIsResultVisible(false);
+    setIncorrectList([]);
   };
 
   if (quiz.length === 0) {
@@ -62,10 +72,33 @@ const App = () => {
     );
   }
 
+  // 틀린 문제가 있을 때 결과화면
+  if (incorrectList.length > 0) {
+    return (
+      <div>
+        <h2>퀴즈 결과</h2>
+        <p>점수: {score}/{quiz.length}</p>
+        <div>
+          <h3>틀린 문제</h3>
+          {incorrectList.map((incorrect) => (
+            <div key={incorrect}>
+              <p>{quiz[incorrect].question}</p>
+            </div>
+          ))}
+        </div>
+        <button onClick={retryQuiz}>틀린 문제 다시 풀기</button>
+      </div>
+    );
+  }
+
+  // 틀린 문제가 없을 때 결과화면
   return (
     <div>
       <h2>퀴즈 결과</h2>
-      <p>점수: {score}/10</p>
+      {score === 10 &&
+        <p>점수: {score}/10</p>
+      }
+      <p>모든 문제를 맞혔습니다!</p>
     </div>
   );
 };
