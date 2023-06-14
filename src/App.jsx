@@ -58,7 +58,8 @@ const App = () => {
   if (!isResultVisible) {
     return (
       <div>
-        <p>{quiz[currentIndex].question}</p>
+        <p>문제 {currentIndex + 1}/{quiz.length}</p>
+        <h3>{quiz[currentIndex].question}</h3>
         {quiz[currentIndex].answers.map((answer, index) => (
           <div key={index}>
             <button
