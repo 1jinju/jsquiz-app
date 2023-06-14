@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [quiz, setQuiz] = useState([]);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchQuizData = async () => {
+      try {
+        const response = await fetch('/src/quizData.json');
+        const data = await response.json();
+        setQuiz(data);
+        // console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchQuizData();
+  }, []);
+
+  const checkAnswer = () => {
+    if (currentIndex < quiz.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  if (quiz.length === 0) {
+    return <p>Loading...</p>;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <p>{quiz[currentIndex].question}</p>
+      {quiz[currentIndex].answers.map((answer, index) => (
+        <div key={index}>
+          <button
+            className={selectedAnswer === index ? 'selected' : ''}
+            onClick={() => setSelectedAnswer(index)}
+          >
+            {answer}
+          </button>
+        </div>
+      ))}
+      <button disabled={selectedAnswer === null} onClick={() => checkAnswer()}>
+        다음 문제
+      </button>
+    </div>
+  );
+};
 
-export default App
+export default App;
