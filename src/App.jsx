@@ -3,11 +3,11 @@ import { Quiz } from './component/Quiz.jsx';
 import { Result } from './component/Result.jsx';
 
 const App = () => {
-  const [quizData, setQuizData] = useState([]);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [isResultVisible, setIsResultVisible] = useState(false);
+  const [quizData, setQuizData] = useState([]); // 퀴즈 데이터
+  const [selectedAnswer, setSelectedAnswer] = useState(null); // 선택된 답
+  const [currentIndex, setCurrentIndex] = useState(0);  // 현재 문제 인덱스
+  const [score, setScore] = useState(0); // 점수
+  const [isResultVisible, setIsResultVisible] = useState(false); // 결과화면 표시 여부
   const [incorrectList, setIncorrectList] = useState([]); // 틀린 문제 리스트
 
   useEffect(() => {
@@ -36,10 +36,12 @@ const App = () => {
     if (currentIndex < quizData.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
+      // 결과화면 표시
       setIsResultVisible(true);
     }
   };
 
+  // 틀린 문제 다시 풀기
   const retryQuiz = () => {
     const incorrectIndexes = incorrectList.map((incorrect) => quizData[incorrect]);
     setQuizData(incorrectIndexes);
@@ -49,6 +51,7 @@ const App = () => {
     setIncorrectList([]);
   };
 
+  // 처음부터 다시 풀기
   const initQuiz = () => {
     window.location.reload();
   };
