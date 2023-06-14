@@ -5,7 +5,7 @@
     "correct": 2
   },
   {
-    "question": "2. 2 + 5 + '1'의 결과를 고르세요.",
+    "question": "2. JavaScript에서 2 + 5 + '1'를 실행했을 때 나오는 결과로 올바른 것을 고르세요.",
     "answers": ["8", "26", "71", "251"],
     "correct": 2
   },
@@ -20,12 +20,12 @@
     "correct": 0
   },
   {
-    "question": "4. async와 쌍으로 쓰이는 것을 고르세요.",
+    "question": "4. async와 쌍으로 쓰이는 것이 무엇인지 고르세요.",
     "answers": ["Promise", "await", "Callback 함수", "setTimeout"],
     "correct": 1
   },
   {
-    "question": "5. W3C DOM의 요소가 아닌 것을 고르세요.",
+    "question": "5. 다음 보기 중 W3C DOM의 요소가 아닌 것을 고르세요.",
     "answers": ["노드", "자식", "부모", "친구"],
     "correct": 3
   },
