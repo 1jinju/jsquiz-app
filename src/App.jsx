@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Quiz } from './component/Quiz.jsx';
+import { Result } from './component/Result.jsx';
 
 const App = () => {
-  const [quiz, setQuiz] = useState([]);
+  const [quizData, setQuizData] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -13,7 +15,7 @@ const App = () => {
       try {
         const response = await fetch('/src/quizData.json');
         const data = await response.json();
-        setQuiz(data);
+        setQuizData(data);
         // console.log(data);
       } catch (error) {
         console.error(error);
@@ -23,7 +25,7 @@ const App = () => {
   }, []);
 
   const checkAnswer = (selectedAnswerIndex) => {
-    const currentQuiz = quiz[currentIndex];
+    const currentQuiz = quizData[currentIndex];
 
     if (selectedAnswerIndex === currentQuiz.correct) {
       setScore(score + 1);
@@ -31,7 +33,7 @@ const App = () => {
       setIncorrectList([...incorrectList, currentIndex]);
     }
 
-    if (currentIndex < quiz.length - 1) {
+    if (currentIndex < quizData.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
       setIsResultVisible(true);
@@ -39,8 +41,8 @@ const App = () => {
   };
 
   const retryQuiz = () => {
-    const incorrectIndexes = incorrectList.map((incorrect) => quiz[incorrect]);
-    setQuiz(incorrectIndexes);
+    const incorrectIndexes = incorrectList.map((incorrect) => quizData[incorrect]);
+    setQuizData(incorrectIndexes);
     setCurrentIndex(0);
     setScore(0);
     setIsResultVisible(false);
@@ -51,67 +53,31 @@ const App = () => {
     window.location.reload();
   };
   
-  const renderQuiz = () => {
-    return (
-      <div>
-        <p>문제 {currentIndex + 1}/{quiz.length}</p>
-        <h3>{quiz[currentIndex].question}</h3>
-        {quiz[currentIndex].answers.map((answer, index) => (
-          <div key={index}>
-            <button
-              className={selectedAnswer === index ? 'selected' : ''} // 선택된 버튼에 클래스 추가
-              onClick={() => setSelectedAnswer(index)}
-            >
-              {answer}
-            </button>
-          </div>
-        ))}
-        <br/>
-        <button disabled={selectedAnswer === null} onClick={() => checkAnswer(selectedAnswer)}>
-          다음 문제
-        </button>
-      </div>
-    );
-  }
-
-  const renderResult = () => {
-    // 틀린 문제가 있을 때 결과화면
-    if (incorrectList.length > 0) {
-      return (
-        <div>
-          <h2>퀴즈 결과</h2>
-          <p>점수: {score}/{quiz.length}</p>
-          <div>
-            <h3>틀린 문제</h3>
-            {incorrectList.map((incorrect) => (
-              <div key={incorrect}>
-                <p>{quiz[incorrect].question}</p>
-              </div>
-            ))}
-          </div>
-          <button onClick={retryQuiz}>틀린 문제 다시 풀기</button>
-        </div>
-      );
-    }
-
-    // 틀린 문제가 없을 때 결과화면
-    return (
-      <div>
-        <h2>퀴즈 결과</h2>
-        {score === 10 &&
-          <p>점수: {score}/10</p>
-        }
-        <p>모든 문제를 맞혔습니다!</p>
-        <button onClick={initQuiz}>처음부터 다시 풀기</button>
-      </div>
-    );
-  };
-
-  if (quiz.length === 0) {
+  if (quizData.length === 0) {
     return <p>Loading...</p>;
   }
 
-  return <div>{!isResultVisible ? renderQuiz() : renderResult()}</div>;
+  return (
+    <div>
+      {!isResultVisible ? (
+        <Quiz
+          currentIndex={currentIndex}
+          quizData={quizData}
+          selectedAnswer={selectedAnswer}
+          setSelectedAnswer={setSelectedAnswer}
+          checkAnswer={checkAnswer}
+        />
+      ) : (
+        <Result
+          score={score}
+          quizData={quizData}
+          incorrectList={incorrectList}
+          retryQuiz={retryQuiz}
+          initQuiz={initQuiz}
+        />
+      )}
+    </div>
+  );
 
 }
 
