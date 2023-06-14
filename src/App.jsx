@@ -37,6 +37,7 @@ const App = () => {
       setIsResultVisible(true);
     }
   };
+
   const retryQuiz = () => {
     const incorrectIndexes = incorrectList.map((incorrect) => quiz[incorrect]);
     setQuiz(incorrectIndexes);
@@ -44,6 +45,10 @@ const App = () => {
     setScore(0);
     setIsResultVisible(false);
     setIncorrectList([]);
+  };
+
+  const initQuiz = () => {
+    window.location.reload();
   };
 
   if (quiz.length === 0) {
@@ -66,7 +71,7 @@ const App = () => {
         ))}
         <br/>
         <button disabled={selectedAnswer === null} onClick={() => checkAnswer(selectedAnswer)}>
-          다음 문제로
+          다음 문제
         </button>
       </div>
     );
@@ -99,6 +104,7 @@ const App = () => {
         <p>점수: {score}/10</p>
       }
       <p>모든 문제를 맞혔습니다!</p>
+      <button onClick={initQuiz}>처음부터 다시 풀기</button>
     </div>
   );
 };
