@@ -50,12 +50,8 @@ const App = () => {
   const initQuiz = () => {
     window.location.reload();
   };
-
-  if (quiz.length === 0) {
-    return <p>Loading...</p>;
-  }
-
-  if (!isResultVisible) {
+  
+  const renderQuiz = () => {
     return (
       <div>
         <p>문제 {currentIndex + 1}/{quiz.length}</p>
@@ -78,36 +74,45 @@ const App = () => {
     );
   }
 
-  // 틀린 문제가 있을 때 결과화면
-  if (incorrectList.length > 0) {
+  const renderResult = () => {
+    // 틀린 문제가 있을 때 결과화면
+    if (incorrectList.length > 0) {
+      return (
+        <div>
+          <h2>퀴즈 결과</h2>
+          <p>점수: {score}/{quiz.length}</p>
+          <div>
+            <h3>틀린 문제</h3>
+            {incorrectList.map((incorrect) => (
+              <div key={incorrect}>
+                <p>{quiz[incorrect].question}</p>
+              </div>
+            ))}
+          </div>
+          <button onClick={retryQuiz}>틀린 문제 다시 풀기</button>
+        </div>
+      );
+    }
+
+    // 틀린 문제가 없을 때 결과화면
     return (
       <div>
         <h2>퀴즈 결과</h2>
-        <p>점수: {score}/{quiz.length}</p>
-        <div>
-          <h3>틀린 문제</h3>
-          {incorrectList.map((incorrect) => (
-            <div key={incorrect}>
-              <p>{quiz[incorrect].question}</p>
-            </div>
-          ))}
-        </div>
-        <button onClick={retryQuiz}>틀린 문제 다시 풀기</button>
+        {score === 10 &&
+          <p>점수: {score}/10</p>
+        }
+        <p>모든 문제를 맞혔습니다!</p>
+        <button onClick={initQuiz}>처음부터 다시 풀기</button>
       </div>
     );
+  };
+
+  if (quiz.length === 0) {
+    return <p>Loading...</p>;
   }
 
-  // 틀린 문제가 없을 때 결과화면
-  return (
-    <div>
-      <h2>퀴즈 결과</h2>
-      {score === 10 &&
-        <p>점수: {score}/10</p>
-      }
-      <p>모든 문제를 맞혔습니다!</p>
-      <button onClick={initQuiz}>처음부터 다시 풀기</button>
-    </div>
-  );
-};
+  return <div>{!isResultVisible ? renderQuiz() : renderResult()}</div>;
+
+}
 
 export default App;
